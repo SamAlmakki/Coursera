@@ -1,26 +1,35 @@
-
+##this func to store a new  inverse 
 makeCacheMatrix <- function(x = matrix()) {
-  m<-NULL
-  set<-function(y){
+## initialize the values
+  inverse <-NULL
+  set<- function(y){
   x<<-y
   m<<-NULL
 }
+##get the current value of x
 get<-function() x
-setmatrix<-function(solve) m<<- solve
-getmatrix<-function() m
+##cache the x 
+setinv<-function(solve) inverse<<- solve
+##reterive teh cached  value
+getinv<-function() inverse
+##update teh list for current values
 list(set=set, get=get,
-   setmatrix=setmatrix,
-   getmatrix=getmatrix)
+   setinv=setinv,
+   getinv=getinv)
 }
-
-cacheSolve <- function(x=matrix(), ...) {
-    m<-x$getmatrix()
-    if(!is.null(m)){
+##compute the inverse only if not there 
+cacheSolve <- function(x, ...) {
+##update the existing values 
+	inverse<-x$getinv()
+##check if the inverse is empty if not use the current value of inverse
+	if(!is.null(inverse)){
       message("getting cached data")
-      return(m)
+      return(inverse)
     }
-    datos<-x$get()
-    m<-solve(datos, ...)
-    x$setmatrix(m)
-    m
+##use data from get	
+    data<-x$get()
+    inverse<-solve(data)
+##cache inverse    
+	x$setinv(inverse)
+    inverse
 }
